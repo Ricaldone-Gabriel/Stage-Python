@@ -6,8 +6,15 @@
 import time
 import serial
 from pathlib import Path
-
 from serial.tools.list_ports import comports
+import socket
+
+# Crea un socket client
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+host = '127.0.0.1'  # Indirizzo IP del server
+port = 8081       # Porta a cui il client si connette
+
+client_socket.connect((host, port))
 
 # Trova tutte le porte seriali disponibili
 ports = list(comports())
@@ -36,6 +43,8 @@ if ports:
             f.write(date + "\t" + x1)	#timestamp + TAB + temp/hum + return carrier
             f.close()
             print(date + "\t" + x1)
+            message = date + "\t" + x1
+            client_socket.send(message.encode())
             time.sleep(2)  #Attesa di 10 s. 1 s è circa il tempo di lettura del sensore
         except KeyboardInterrupt:
             f.close()
