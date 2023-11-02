@@ -15,22 +15,17 @@ ports = list(comports())
 if ports:
     # Se sono disponibili porte seriali, seleziona la prima porta trovata
     porta = ports[0].device
-    #ser = serial.Serial(port, baudrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=5)
     print(f"Connesso alla porta: {porta}")
     ser1 = serial.Serial(	        #configuro UART1
         port=porta,	        #modificare ttyS1 con nome porta seriale utilizzata
-        #
         baudrate =9600,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS,
         timeout=5
     )
-    #Path.cwd()
     ser1.flush()      #Pulizia del buffer della porta seriale (USB) di Arduino
     time.sleep(2)     #Attesa necessaria per permettere ad Arduino di completare le operazioni di setup
-    #ser1.write(b'IDN?')
-
     while 1:
         try:
             ser1.write(b'MEAS?') #Chiedi all'arduino i dati relativi Temp e Umid.
@@ -46,7 +41,6 @@ if ports:
             f.close()
             ser1.close()
             print("ho finito")
-
     else:
         print("Nessuna porta seriale disponibile")
 
