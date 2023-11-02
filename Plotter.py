@@ -9,24 +9,43 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = '127.0.0.1'  # Indirizzo IP del server
 port = 8081       # Porta su cui il server ascolta
 
-server_socket.bind((host, port))
-server_socket.listen(1)  # Il server accetta una connessione alla volta
-
-print(f"In attesa di connessioni su {host}:{port}")
-conn, addr = server_socket.accept()
-print(f"Connesso a {addr}")
+server_socket.settimeout(1) #Dopo N secondi, crea un errore di timeout
 arrayDatiRicevuti = []
+
+try:
+    server_socket.bind((host, port))
+    server_socket.listen(1)
+
+    print(f"In attesa di connessioni su {host}:{port}")
+    conn, addr = server_socket.accept()
+
+    while True:
+        data = conn.recv(1024).decode()
+        if not data:
+            break
+        print(f"Ricevuto: {data}")
+        arrayDatiRicevuti.append(data)
+
+except socket.timeout:
+    print(f"Tempo scaduto")
+    f = open(Path.cwd() / 'Data.txt', "r")	
+    fileLetto = f.readlines()
+    leggi = True
+    for line in fileLetto:
+        if leggi:
+            arrayDatiRicevuti.append(line)
+            leggi = False
+        else:
+            leggi = True
+
+     
+
+
 arrayTempo = []
 arrayTemperatura = []
 arrayUmidita = []
 datiSingoli = []
 
-while True:
-    data = conn.recv(1024).decode()
-    if not data:
-        break
-    print(f"Ricevuto: {data}")
-    arrayDatiRicevuti.append(data)
 
 for dato in arrayDatiRicevuti:
     datiSingoli = dato.split("\t")
@@ -44,4 +63,10 @@ fig.update_layout(
     xaxis_title = "Tempo",
     yaxis_title = "Valori Raccolti"
 )
+
+print(Path.cwd() / time.strftime("%Y-%m-%d", time.gmtime())/'.txt')
+
+nomeFile = arrayTempo[0].split(" ")[0] + '.html'
+
+fig.write_html(Path.cwd() / nomeFile)
 fig.show()
