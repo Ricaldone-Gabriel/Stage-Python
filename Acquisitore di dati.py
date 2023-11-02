@@ -14,8 +14,11 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = '127.0.0.1'  # Indirizzo IP del server
 port = 8081       # Porta a cui il client si connette
 
-client_socket.connect((host, port))
-
+while client_socket.connect_ex((host,port)) != 0:
+    try:
+        time.sleep(2)
+    except KeyboardInterrupt:
+        exit()
 # Trova tutte le porte seriali disponibili
 ports = list(comports())
 
