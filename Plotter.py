@@ -1,15 +1,17 @@
 from pathlib import Path
 import time
+import os
 import plotly.graph_objects as go
 import pandas
 import socket
 
 # Crea un socket server
+dir_path = os.path.dirname(os.path.realpath(__file__))
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = '127.0.0.1'  # Indirizzo IP del server
 port = 8081       # Porta su cui il server ascolta
 
-server_socket.settimeout(1) #Dopo N secondi, crea un errore di timeout
+server_socket.settimeout(10) #Dopo N secondi, crea un errore di timeout
 arrayDatiRicevuti = []
 
 try:
@@ -28,15 +30,19 @@ try:
 
 except socket.timeout:
     print(f"Tempo scaduto")
-    f = open(Path.cwd() / 'Data.txt', "r")	
-    fileLetto = f.readlines()
-    leggi = True
-    for line in fileLetto:
-        if leggi:
-            arrayDatiRicevuti.append(line)
-            leggi = False
-        else:
-            leggi = True
+    try:
+        f = open(dir_path + "/Data/" + 'Data.txt', "r")	
+        fileLetto = f.readlines()
+        leggi = True
+        for line in fileLetto:
+            if leggi:
+                arrayDatiRicevuti.append(line)
+                leggi = False
+            else:
+                leggi = True
+    except FileNotFoundError:
+        print("File non trovato")
+        exit()
 
      
 
@@ -68,5 +74,5 @@ print(Path.cwd() / time.strftime("%Y-%m-%d", time.gmtime())/'.txt')
 
 nomeFile = arrayTempo[0].split(" ")[0] + '.html'
 
-fig.write_html(Path.cwd() / nomeFile)
+fig.write_html(dir_path + "/Plots/" + nomeFile)
 fig.show()
