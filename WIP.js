@@ -8,17 +8,13 @@ const app = express();
 const port = 8080;
 //const graphicsRoutes = require("./graphics.js");
 
-//#region
-//
-//
 //
 //  ---------       ----------
 //  |  Web  | <---- | Python | <---- Term
 //  | Server| ----> | Server | <---- Term
 //  ---------       ----------
 //
-//  Il server python raccoglie dati dai termometri, quando il web server richiede dei dati nuovi il server python risponde con un file.
-//#endregion
+//  Quando il Web Server necessita dei plot nuovi, li richiede al server python
 
 app.set("view engine", "ejs");
 app.use("/", express.static(__dirname + "/views"));
