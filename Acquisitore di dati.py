@@ -19,7 +19,7 @@ client_socket.settimeout(20)
 try:
     client_socket.connect((host,port))
     conn = True
-except TimeoutError:
+except (socket.timeout, ConnectionRefusedError) as error:
     print("Timeout per la connessione")
 
 ports = list(comports()) # Trova tutte le porte seriali disponibili
