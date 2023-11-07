@@ -5,7 +5,16 @@ import plotly.graph_objects as go
 import pandas
 import socket
 
-# Crea un socket server
+
+#
+#  ---------       ----------
+#  |  Web  | <---- | Python | <---- Term
+#  | Server| ----> | Server | <---- Term
+#  ---------       ----------
+#
+#  Il server python raccoglie dati dai termometri, quando il web server richiede dei plot nuovi il server python risponde.
+
+# Crea un socket server per i termometri
 dir_path = os.path.dirname(os.path.realpath(__file__))
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = '127.0.0.1'  # Indirizzo IP del server
