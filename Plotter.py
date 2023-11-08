@@ -11,7 +11,7 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = '127.0.0.1'  # Indirizzo IP del server
 port = 8081       # Porta su cui il server ascolta
 
-server_socket.settimeout(1) #Dopo N secondi, crea un errore di timeout
+server_socket.settimeout(10) #Dopo N secondi, crea un errore di timeout
 arrayDatiRicevuti = []
 
 try:

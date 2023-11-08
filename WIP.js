@@ -13,7 +13,6 @@ const port = 8080;
 //  |  Web  | <---- | Python | <---- Term
 //  | Server| ----> | Server | <---- Term
 //  ---------       ----------
-//
 //  Quando il Web Server necessita dei plot nuovi, li richiede al server python
 
 app.set("view engine", "ejs");
@@ -25,7 +24,9 @@ app.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const server = app.listen(port, () =>
+  console.log(`Example app listening on port ${port}!`)
+);
 
 exec(`python ${plotterPython}`, (err) => {
   if (err) {
@@ -34,4 +35,19 @@ exec(`python ${plotterPython}`, (err) => {
   } else {
     console.log("Avviato");
   }
+});
+
+const io = require("socket.io")(server);
+
+io.on("connection", (socket) => {
+  console.log("Un client si è connesso");
+
+  socket.on("messaggio", (data) => {
+    console.log("Messaggio ricevuto:", data);
+    socket.emit("conferma", "Messaggio ricevuto con successo");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Il client si è disconnesso");
+  });
 });

@@ -1,0 +1,18 @@
+body {
+    background-color: #F1F9FB;
+}
+
+p{
+    color:black;
+}
+
+.rowColor {
+    background-color: #DDEFF5;
+}
+
+.bd-footer {
+  background-color: lightblue;
+  margin-top: 10px;
+  height:25px;
+  align: bottom !important;
+}

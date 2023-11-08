@@ -1,12 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <image src="./Plots/Hum/2023-11-02.png"></image>
-    <image src="./Plots/Temp/2023-11-02.png"></image>
-</body>
-</html>
+<%- include("./Partials/header.ejs") %>
+
+<body class="d-flex flex-column min-vh-100">
+  <%- include("./Partials/navbar.ejs") %>
+  <div class="container-fluid">
+    <div class="row mt-4 rowColor p-3">
+      <div class="col-auto"> 
+        <p class="fw-bold" style="text-align: center;">Umidità recente</p>
+        <image class="img-fluid mx-auto rounded d-block" src="./Plots/Hum/recente.png"></image>
+      </div>
+      <div class="col">
+
+      </div>
+      <div class="col-auto "> 
+        <p class="fw-bold" style="text-align: center;">Temperatura recente</p>
+        <image class="img-fluid mx-auto rounded d-block" src="./Plots/Temp/recente.png"></image>
+      </div>
+    </div>
+  </div>
+<%- include("./Partials/footer.ejs") %>

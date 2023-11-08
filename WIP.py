@@ -3,6 +3,7 @@ import time
 import os
 import plotly.graph_objects as go
 import pandas
+from socketIO_client import SocketIO, LoggingNamespace #Non mi funziona sul mio pc RAAAH
 import socket
 
 
@@ -15,6 +16,12 @@ import socket
 #  Il server python raccoglie dati dai termometri, quando il web server richiede dei plot nuovi il server python risponde.
 
 # Crea un socket server per i termometri
+
+async def main():
+    return
+
+
+"""
 dir_path = os.path.dirname(os.path.realpath(__file__))
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = '127.0.0.1'  # Indirizzo IP del server
@@ -117,3 +124,4 @@ figTemp.write_image(dir_path + "/views/Plots/Temp/" + nomeFile)
 fig.write_image(dir_path + "/views/Plots/recente.png") #Necessita kaleido
 figHum.write_image(dir_path + "/views/Plots/Hum/recente.png")
 figTemp.write_image(dir_path + "/views/Plots/Temp/recente.png")
+"""
