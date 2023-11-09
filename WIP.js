@@ -33,10 +33,10 @@ const io = require("socket.io")(server);
 
 io.on("connection", (socket) => {
   console.log("Un client si è connesso");
-
-  socket.on("messaggio", (data) => {
+  socket.emit("message", true);
+  socket.on("Plot_answer", (data) => {
     console.log("Messaggio ricevuto:", data);
-    socket.emit("conferma", "Messaggio ricevuto con successo");
+    //socket.emit("conferma", "Messaggio ricevuto con successo");
   });
 
   socket.on("disconnect", () => {
