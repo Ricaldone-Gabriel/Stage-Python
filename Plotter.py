@@ -44,14 +44,10 @@ except socket.timeout:
         print("File non trovato")
         exit()
 
-     
-
-
 arrayTempo = []
 arrayTemperatura = []
 arrayUmidita = []
 datiSingoli = []
-
 
 for dato in arrayDatiRicevuti:
     datiSingoli = dato.split("\t")

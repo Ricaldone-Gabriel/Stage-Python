@@ -1,11 +1,11 @@
 const express = require("express");
-const { exec } = require("child_process");
 const path = require("path");
 const ejs = require("ejs");
 const utils = require("./utils.js");
-const plotterPython = "Plotter.py";
 const app = express();
 const port = 8080;
+//const { exec } = require("child_process");
+//const plotterPython = "Plotter.py";
 //const graphicsRoutes = require("./graphics.js");
 
 //
@@ -28,15 +28,7 @@ const server = app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`)
 );
 
-exec(`python ${plotterPython}`, (err) => {
-  if (err) {
-    console.log(err);
-    return;
-  } else {
-    console.log("Avviato");
-  }
-});
-
+//Socket---------------------------------------------------------
 const io = require("socket.io")(server);
 
 io.on("connection", (socket) => {
