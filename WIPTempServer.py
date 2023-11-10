@@ -7,7 +7,7 @@ import os
 import plotly.graph_objects as go
 import pandas
 dir_path = os.path.dirname(os.path.realpath(__file__))
-#Necessita: websocket-client e python-socketio e aiohttp==3.9.0b1
+#Necessita: websocket-client, python-socketio, aiohttp==3.9.0b1, C++ 14.0 (Minimo)
 
 #               Server termometri
 # Ancora da sviluppare, necessita: Termometro! (E anche più di uno possibilmente)
