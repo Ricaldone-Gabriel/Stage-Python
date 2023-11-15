@@ -131,10 +131,10 @@ async def main():
         print("Richiesta")
         await creaPlot()
 
-    #serverTermometro = asyncio.create_task(serverTermometri())
+    serverTermometro = asyncio.create_task(serverTermometri())
     await sio.connect('http://localhost:8080', transports=["websocket"])
     await sio.wait()
-    #await serverTermometro
+    await serverTermometro
 
 if __name__ == '__main__':
     asyncio.run(main())
