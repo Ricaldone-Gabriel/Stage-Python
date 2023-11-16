@@ -13,21 +13,62 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 # Ancora da sviluppare, necessita: Termometro! (E anche più di uno possibilmente)
 #
 #
+
+# Creazione di un'istanza di Socket.IO Server
+sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
+
+# Creazione di un'istanza di ASGIApp per utilizzare socket.io con ASGI
+app = socketio.ASGIApp(sio)
+
+async def handle_connection(sid, environ):
+    print(f"Nuova connessione da {sid}")
+
+# Gestisci i messaggi per il namespace '/server1'
+@sio.on('message', namespace='/server1')
+async def handle_message_server1(sid, data):
+    print(f"Ricevuto messaggio da {sid} su server1: {data}")
+
+# Gestisci i messaggi per il namespace '/server2'
+@sio.on('message', namespace='/server2')
+async def handle_message_server2(sid, data):
+    print(f"Ricevuto messaggio da {sid} su server2: {data}")
+
+async def main():
+        # Configurazione del server socket.io su due porte diverse
+    server1 = await asyncio.create_task(sio.server())
+    server2 = await asyncio.create_task(sio.server(port=8766))
+
+    # Impostazione della logica del server per le connessioni
+    server1.on('connect', handle_connection)
+    server2.on('connect', handle_connection)
+
+    # Avvio dei due server in modo concorrente
+    await asyncio.gather(
+        server1.serve_forever(),
+        server2.serve_forever(),
+        #asyncio.create_task(main_loop())
+    )
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+
+"""
 async def serverTermometri():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     host = '127.0.0.1'  # Indirizzo IP del server
     port = 8081       # Porta su cui il server ascolta
-    server_socket.settimeout(10) #Dopo N secondi, crea un errore di timeout
+    server_socket.settimeout(60) #Dopo N secondi, crea un errore di timeout
 
     arrayDatiRicevuti = []
-
+    print("Banana")
     server_socket.bind((host, port))
     server_socket.listen(1)
 
     print(f"In attesa di connessioni su {host}:{port}")
     conn, addr = server_socket.accept()
     while True:
-        async with open(dir_path + "/Data/" + "Data.txt", "a") as file:
+        with open(dir_path + "/Data/" + "Data.txt", "a") as file:
             data = conn.recv(1024).decode()
             #if not data:
             #    break
@@ -40,7 +81,7 @@ async def serverTermometri():
 
 async def creaPlot():
     file = open(dir_path + "/Data/" + "data.txt", "r")
-    
+    print("Banana felice")
     lines = file.readlines()
     arrayTempo = []
     arrayTemperatura = []
@@ -62,7 +103,7 @@ async def creaPlot():
         xaxis_title = "Tempo",
         yaxis_title = "Valori Raccolti"
     )
-    """
+    
     fig = go.Figure()
 
     figTemp = go.Figure()
@@ -110,12 +151,12 @@ async def creaPlot():
     fig.write_image(dir_path + "/views/Plots/recente.png") #Necessita kaleido
     figHum.write_image(dir_path + "/views/Plots/Hum/recente.png")
     figTemp.write_image(dir_path + "/views/Plots/Temp/recente.png")
-    """
+    
 #               Main
 # Creo un socket per comunicare col server NodeJs, questo programma qua è un client relativo a nodejs.
 # Il server plotter rimane in ascolto per richieste del server nodejs, in caso arrivasse una richiesa crea un plot.
 
-async def main():
+async def nodeJSsocket():
     sio = socketio.AsyncClient()
     print("Test")
     @sio.event
@@ -129,15 +170,12 @@ async def main():
     @sio.event
     async def message(data):
         print("Richiesta")
-        await creaPlot()
+        creaPlot()
 
-    serverTermometro = asyncio.create_task(serverTermometri())
-    await sio.connect('http://localhost:8080', transports=["websocket"])
-    await sio.wait()
-    await serverTermometro
+    sio.connect('http://127.0.0.1:3000', transports=["websocket"])
+    #await serverTermometri()
+    sio.wait()
 
-if __name__ == '__main__':
-    asyncio.run(main())
 
 #
 #  ---------       ----------
@@ -148,3 +186,4 @@ if __name__ == '__main__':
 #  Il server python raccoglie dati dai termometri, quando il web server richiede dei plot nuovi il server python risponde.
 
 # Crea un socket server per i termometri
+"""

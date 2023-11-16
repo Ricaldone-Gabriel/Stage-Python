@@ -3,7 +3,7 @@ const path = require("path");
 const ejs = require("ejs");
 const utils = require("./utils.js");
 const app = express();
-const port = 8080;
+const port = 3000;
 //const { exec } = require("child_process");
 //const plotterPython = "Plotter.py";
 //const graphicsRoutes = require("./graphics.js");
@@ -33,7 +33,10 @@ const io = require("socket.io")(server);
 
 io.on("connection", (socket) => {
   console.log("Un client si è connesso");
-  socket.emit("message", true);
+  setTimeout(() => {
+    socket.emit("message", true);
+  }, 2000);
+
   socket.on("Plot_answer", (data) => {
     console.log("Messaggio ricevuto:", data);
     //socket.emit("conferma", "Messaggio ricevuto con successo");
